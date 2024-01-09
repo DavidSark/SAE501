@@ -106,28 +106,73 @@ app.post('/users/register', (req, res) => {
 
 
 // Route POST pour la connexion utilisateur
-app.post('/users/login', (req, res) => {
-  const { name, password } = req.body;
-  if (!name || !password) {
-      res.status(400).json({ error: 'Email et mot de passe sont requis pour se connecter' });
-      return;
+// app.post('/login', (req, res) => {
+//   const { name, password } = req.body;
+//   if (!name || !password) {
+//       res.status(400).json({ error: 'Email et mot de passe sont requis pour se connecter' });
+//       return;
+//   }
+//   console.log('Trying to log in user...');
+//   db.get('SELECT * FROM Users WHERE name = ? AND password = ?', [name, password], (err, user) => {
+//       if (err) {
+//           console.error('Error logging in user:', err.message);
+//           res.status(500).json({ error: 'Internal server error' });
+//           return;
+//       }
+//       if (!user) {
+//           console.log('User not found or incorrect password');
+//           res.status(401).json({ error: 'Utilisateur non trouvé ou mot de passe incorrect' });
+//           return;
+//       }
+     
+//       res.json({ userID: user.userID, name: user.name });
+//       console.log(`${name} connecté avec succès!`);
+//   });
+// });
+
+// Supposez que votre route de connexion soit '/login'
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    res.status(400).json({ error: 'Nom d\'utilisateur et mot de passe sont requis pour se connecter' });
+    return;
   }
+
   console.log('Trying to log in user...');
-  db.get('SELECT * FROM Users WHERE name = ? AND password = ?', [name, password], (err, user) => {
-      if (err) {
-          console.error('Error logging in user:', err.message);
-          res.status(500).json({ error: 'Internal server error' });
-          return;
-      }
-      if (!user) {
-          console.log('User not found or incorrect password');
-          res.status(401).json({ error: 'Utilisateur non trouvé ou mot de passe incorrect' });
-          return;
-      }
-      console.log('Login successful!');
-      res.json({ userID: user.userID, name: user.name });
+
+  // Recherche de l'utilisateur dans la base de données par le nom d'utilisateur
+  db.get('SELECT * FROM Users WHERE name = ? AND password = ?', [username, password], (err, user) => {
+    if (err) {
+      console.error('Error logging in user:', err.message);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    if (!user) {
+      console.log('User not found or incorrect password');
+      res.status(401).json({ error: 'Utilisateur non trouvé ou mot de passe incorrect' });
+      return;
+    }
+
+    // Envoyer une réponse JSON pour signaler la connexion réussie
+    res.json({ userID: user.userID, name: user.name });
+
+    console.log(`${username} connecté avec succès!`);
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
