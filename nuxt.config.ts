@@ -4,6 +4,12 @@ export default defineNuxtConfig({
 
   css:['@/assets/main.scss'],
 
+  
+  runtimeConfig: {
+    public: {
+      apiUrl: "",
+    },
+  },
 
   vite: {
     css: {
