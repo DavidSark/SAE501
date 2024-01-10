@@ -1,6 +1,8 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const app = express();
 //Enable CORS from all origins
@@ -133,8 +135,8 @@ app.post('/register', (req, res) => {
 // Supposez que votre route de connexion soit '/login'
 
 app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { name, password } = req.body;
+  if (!name || !password) {
     res.status(400).json({ error: 'Nom d\'utilisateur et mot de passe sont requis pour se connecter' });
     return;
   }
@@ -142,7 +144,7 @@ app.post('/login', (req, res) => {
   console.log('Trying to log in user...');
 
   // Recherche de l'utilisateur dans la base de données par le nom d'utilisateur
-  db.get('SELECT * FROM Users WHERE name = ? AND password = ?', [username, password], (err, user) => {
+  db.get('SELECT * FROM Users WHERE name = ? AND password = ?', [name, password], (err, user) => {
     if (err) {
       console.error('Error logging in user:', err.message);
       res.status(500).json({ error: 'Internal server error' });
@@ -158,7 +160,7 @@ app.post('/login', (req, res) => {
     // Envoyer une réponse JSON pour signaler la connexion réussie
     res.json({ userID: user.userID, name: user.name });
 
-    console.log(`${username} connecté avec succès!`);
+    console.log(`${name} connecté avec succès!`);
   });
 });
 
