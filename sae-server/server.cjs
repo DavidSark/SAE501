@@ -79,7 +79,7 @@ app.get('/stones', (req, res) => {
 
 
 // Route pour créer un compte utilisateur
-app.post('/users/register', (req, res) => {
+app.post('/register', (req, res) => {
   const { name, password} = req.body;
   if (!name || !password) {
       res.status(400).json({ error: 'Name, password, are required' });

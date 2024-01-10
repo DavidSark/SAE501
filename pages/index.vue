@@ -40,9 +40,6 @@ const login = async () => {
             <label for="uname"><b>Username</b></label>
             <input v-model="formData.username" type="text" placeholder="Enter Username" name="username" required>
 
-
-
-
             <label for="psw"><b>Password</b></label>
             <input v-model="formData.password" type="password" placeholder="Enter Password" name="password" required>
 
