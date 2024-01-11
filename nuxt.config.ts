@@ -5,6 +5,17 @@ export default defineNuxtConfig({
   css:['@/assets/main.scss'],
 
 
+  runtimeConfig: {
+    public: {
+      apiUrl: "",
+    },
+  },
+
+ 
+  modules: [
+    "@pinia/nuxt"
+  ],
+
   vite: {
     css: {
       preprocessorOptions: {
