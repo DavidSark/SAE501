@@ -11,6 +11,10 @@ export default defineNuxtConfig({
     },
   },
 
+ 
+  modules: [
+    "@pinia/nuxt"
+  ],
 
   vite: {
     css: {

@@ -1,27 +1,45 @@
 <template>
-    <div>
-      <h2>Connexion</h2>
-      <input v-model="name" type="text" placeholder="Nom d'utilisateur" />
-      <input v-model="password" type="password" placeholder="Mot de passe" />
-      <button @click="login">Se connecter</button>
-    </div>
-  </template>
-  
-  <script setup>
-import { ref } from 'vue';
-import { loginUser } from '~/utils/axios';
+    <main>
+        <h1>Page Login</h1>
 
-const name = ref('');
-const password = ref('');
 
-const login = async () => {
-  try {
-    const response = await loginUser(name.value, password.value);
-    console.log('Connexion réussie:', response);
-    // Traiter la réponse, par exemple enregistrer le token JWT
-  } catch (error) {
-    console.error('Erreur lors de la connexion:', error);
-  }
-};
-  </script>
+        <div>
+            <h2>Connexion</h2>
+
+            <form @submit.prevent="connexion" method="post">
+                <input type="text" name="name" id="pesudo" required placeholder="Pseudo" v-model="userCo.name">
+                <input type="text" name="password" id="mdp" required placeholder="Mot de Passe" v-model="userCo.password">
+
+                <input type="submit" value="Je me connect">
+            </form>
+
+            {{ userCo }}
+        </div>
+
+        <p>{{ message }}</p>
+    </main>
+</template>
   
+<script setup>
+import {client} from '@/utils/axios'
+import { useGlobalStore } from '@/stores/global'
+const store = useGlobalStore()
+
+const route = useRoute()
+
+const userCo = ref({})
+const message = ref("")
+
+// enregistrement de la montre modifiée dans la base de données
+const connexion = async () => {
+    try {
+        const response = await client.post(`/login`, userCo.value)
+        const { token } = response.data // Récupérer le token depuis la réponse client
+        store.setToken(token) // Enregistrer le token dans le store Pinia
+        message.value = "Vous êtes bien connecté"
+    } catch (error) {
+        console.error("Erreur lors de la connexion :", error.message)
+        message.value = "Erreur lors de la connexion"
+    }
+}
+</script>

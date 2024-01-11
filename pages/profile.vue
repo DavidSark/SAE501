@@ -1,12 +1,35 @@
-<script setup>
-</script>
-
 <template>
     <div>
-        <h1>Profil </h1>
+      <h1>Page de Profil</h1>
+      <p>Bienvenue, {{ username }} !</p>
+      <button @click="logout">Déconnexion</button>
     </div>
-</template>
+  </template>
+  
+  <script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
-<style lang="scss" scoped>
+const authStore = useAuthStore();
+const router = useRouter();
+const username = ref('');
+import { definePageMeta } from 'nuxt/app';
 
-</style>
+definePageMeta({
+  middleware: 'auth'
+});
+
+onMounted(() => {
+  username.value = localStorage.getItem('username');
+});
+
+const logout = () => {
+  authStore.logout();
+  if (process.client) {
+    localStorage.removeItem('username');
+    localStorage.removeItem('token');
+  }
+  router.push('/login');
+};
+</script>
