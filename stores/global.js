@@ -3,8 +3,6 @@ import { defineStore } from "pinia";
 export const useGlobalStore = defineStore("global", {
   state: () => ({
     token: null, // pour la connection
-
-
   }),
   actions: {
 
@@ -17,8 +15,13 @@ export const useGlobalStore = defineStore("global", {
     },
 
     clearToken() {
-      this.token = null
-      localStorage.setItem('Token de Connection', JSON.stringify(this.token))
+      this.token = null;
+      localStorage.removeItem('Token de Connection');
+    },
+
+
+    logout() {
+      this.clearToken(); 
     },
 
     }
