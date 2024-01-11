@@ -17,7 +17,8 @@
 
         <div class="m-container__right">
            <div class="a-log">
-                login
+                
+            <nuxt-link to="/login">login</nuxt-link>
            </div>
            <div class="a-cart">
             <img src="/icons/shopping-bag.svg" alt="">
@@ -74,16 +75,23 @@
     .a-log{
         background-color: $orange;
         padding: rem(12) rem(30);
-        color: white;
         border: 1px solid $orange;
         transition: all .4s;
         cursor: pointer;
+        a{
+            text-decoration: none;
+            color: white;
+            transition: all .4s;
+        }
     }
 
     .a-log:hover {
             background-color: transparent;
             border: 1px solid $orange;
-            color: $orange;
+          
+            a{
+                color: $orange;
+            }
     }
     .a-cart{
         display: flex;

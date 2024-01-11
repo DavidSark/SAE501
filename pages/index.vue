@@ -6,7 +6,7 @@ const apiData = ref([]);
 
 onBeforeMount(async () => {
   try {
-    const response = await client.get('/stones/');
+    const response = await client.get('/stones');
     apiData.value = response.data;
   } catch (error) {
     console.error('Erreur lors de la récupération des données de l\'API', error);
@@ -24,7 +24,9 @@ onBeforeMount(async () => {
         <ul>
         <li v-for="item in apiData" :key="item.id">
             
-            {{ item.name }}
+            {{ item.stoneName }}
+            {{ item.stonePrice }}€
+       
 
         </li>
         </ul>
