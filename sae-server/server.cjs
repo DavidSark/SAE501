@@ -74,11 +74,11 @@ app.get('/stones', (req, res) => {
     });
   });
 
-// Route pour afficher toutes les pierres 
+// Route pour afficher toutes les boitiers 
 app.get('/boitiers', (req, res) => {
     db.all('SELECT * FROM boitiers', (err, rows) => {
         if (err) {
-            console.error('Error fetching pierres:', err.message);
+            console.error('Error fetching boitiers:', err.message);
             res.status(500).json({ error: 'Internal server error' });
             return;
         }
@@ -87,6 +87,20 @@ app.get('/boitiers', (req, res) => {
   });
 
 
+  // Route pour afficher toutes les montres 
+app.get('/watches', (req, res) => {
+  db.all('SELECT * FROM watches', (err, rows) => {
+      if (err) {
+          console.error('Error fetching watches:', err.message);
+          res.status(500).json({ error: 'Internal server error' });
+          return;
+      }
+      res.json(rows); 
+  });
+});
+
+
+  
 
 
 //----------------------------------------Route POST-------------------------------------//
@@ -141,18 +155,6 @@ app.post('/login', (req, res) => {
     console.log(`${name} connecté avec succès!`);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Route POST pour ajouter une pierre à la table Stones
@@ -274,6 +276,36 @@ app.post('/watches/add', (req, res) => {
               res.json({ watchID, userID, boitierID, stoneID, braceletID });
           });
       });
+});
+
+
+
+
+
+app.post('/watch/add', (req, res) => {
+  const { userID, stoneID, braceletID, boitierID, watchPrice, totalPrice } = req.body;
+  if (!userID || !stoneID || !braceletID || !boitierID || !watchPrice || !totalPrice) {
+    res.status(400).json({ error: 'userID, stoneID, braceletID, boitierID, watchPrice, and totalPrice are required' });
+    return;
+  }
+  
+  console.log('Trying to insert into database...');
+  
+  
+  db.run('INSERT INTO Watches (userID, stoneID, braceletID, boitierID, watchPrice, totalPrice) SELECT', 
+         [userID, stoneID, braceletID, boitierID, watchPrice, totalPrice], 
+         function (err) {
+    if (err) {
+      console.error('Error adding watch:', err.message);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    const watchID = this.lastID;
+    console.log('Insertion successful!');
+    res.json({ watchID, userID, stoneID, braceletID, boitierID, watchPrice, totalPrice });
+  });
+  
 });
 
 
