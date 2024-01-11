@@ -1,8 +1,6 @@
 <template>
     <main>
         <h1>Page Login</h1>
-
-
         <div>
             <h2>Connexion</h2>
 
@@ -17,6 +15,9 @@
         </div>
 
         <p>{{ message }}</p>
+
+        <p>{{ logoutMessage }}</p>
+        <button @click="logout">Déconnexion</button>
     </main>
 </template>
   
@@ -24,22 +25,33 @@
 import {client} from '@/utils/axios'
 import { useGlobalStore } from '@/stores/global'
 const store = useGlobalStore()
+import { useRouter } from 'vue-router';
 
-const route = useRoute()
+const router = useRouter();
 
 const userCo = ref({})
 const message = ref("")
-
+const logoutMessage = ref('');
 // enregistrement de la montre modifiée dans la base de données
 const connexion = async () => {
     try {
         const response = await client.post(`/login`, userCo.value)
         const { token } = response.data // Récupérer le token depuis la réponse client
         store.setToken(token) // Enregistrer le token dans le store Pinia
-        message.value = "Vous êtes bien connecté"
+        message.value = "Vous êtes bien connecté";
+        logoutMessage.value = '';
+
+      router.push('/profile');
     } catch (error) {
         console.error("Erreur lors de la connexion :", error.message)
         message.value = "Erreur lors de la connexion"
     }
+    
 }
+
+const logout = () => {
+  store.logout();
+  message.value = ''
+  logoutMessage.value = 'Vous êtes bien déconnecté';
+};
 </script>

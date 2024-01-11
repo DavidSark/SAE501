@@ -20,7 +20,7 @@ onBeforeMount(async () => {
 
 <template>
     <div>
-      
+        <Header></Header>
         <ul>
         <li v-for="item in apiData" :key="item.id">
             
