@@ -6,18 +6,12 @@
 
             <form @submit.prevent="connexion" method="post">
                 <input type="text" name="name" id="pesudo" required placeholder="Pseudo" v-model="userCo.name">
-                <input type="text" name="password" id="mdp" required placeholder="Mot de Passe" v-model="userCo.password">
+                <input type="password" name="password" id="mdp" required placeholder="Mot de Passe" v-model="userCo.password">
 
                 <input type="submit" value="Je me connect">
             </form>
-
-            {{ userCo }}
-        </div>
-
-        <p>{{ message }}</p>
-
-        <p>{{ logoutMessage }}</p>
-        <button @click="logout">Déconnexion</button>
+            
+        </div>     
     </main>
 </template>
   
@@ -31,7 +25,6 @@ const router = useRouter();
 
 const userCo = ref({})
 const message = ref("")
-const logoutMessage = ref('');
 // enregistrement de la montre modifiée dans la base de données
 const connexion = async () => {
     try {
@@ -39,8 +32,6 @@ const connexion = async () => {
         const { token } = response.data // Récupérer le token depuis la réponse client
         store.setToken(token) // Enregistrer le token dans le store Pinia
         message.value = "Vous êtes bien connecté";
-        logoutMessage.value = '';
-
       router.push('/profile');
     } catch (error) {
         console.error("Erreur lors de la connexion :", error.message)
@@ -49,9 +40,4 @@ const connexion = async () => {
     
 }
 
-const logout = () => {
-  store.logout();
-  message.value = ''
-  logoutMessage.value = 'Vous êtes bien déconnecté';
-};
 </script>
