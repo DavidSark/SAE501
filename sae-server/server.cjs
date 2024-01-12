@@ -26,20 +26,6 @@ const db = new sqlite3.Database('../database/sae501-bdd.bd', (err) => {
   });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //----------------------------------------Route GET-------------------------------------//
 
 
@@ -51,9 +37,9 @@ app.get('/', (req, res) => {
 
 // Route pour afficher tous les utilisateurs
 app.get('/users', (req, res) => {
-  db.all('SELECT * FROM users', (err, rows) => {
+  db.all('SELECT * FROM user', (err, rows) => {
       if (err) {
-          console.error('Error fetching pierres:', err.message);
+          console.error('Error fetching users:', err.message);
           res.status(500).json({ error: 'Internal server error' });
           return;
       }
@@ -61,10 +47,9 @@ app.get('/users', (req, res) => {
   });
 });
 
-
 // Route pour afficher toutes les pierres 
-app.get('/stones', (req, res) => {
-    db.all('SELECT * FROM stones', (err, rows) => {
+app.get('/pierres', (req, res) => {
+    db.all('SELECT * FROM pierre', (err, rows) => {
         if (err) {
             console.error('Error fetching pierres:', err.message);
             res.status(500).json({ error: 'Internal server error' });
@@ -74,11 +59,22 @@ app.get('/stones', (req, res) => {
     });
   });
 
-// Route pour afficher toutes les boitiers 
-app.get('/boitiers', (req, res) => {
-    db.all('SELECT * FROM boitiers', (err, rows) => {
+// Route pour afficher toutes les textures de boitiers 
+app.get('/boitier_texture', (req, res) => {
+    db.all('SELECT * FROM Boitier_Texture', (err, rows) => {
         if (err) {
-            console.error('Error fetching boitiers:', err.message);
+            console.error('Error fetching Boitier_Texture:', err.message);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(rows); 
+    });
+  });
+// Route pour afficher toutes les formes de boitiers 
+app.get('/boitier_forme', (req, res) => {
+    db.all('SELECT * FROM Boitier_Forme', (err, rows) => {
+        if (err) {
+            console.error('Error fetching Boitier_Forme:', err.message);
             res.status(500).json({ error: 'Internal server error' });
             return;
         }
@@ -86,10 +82,25 @@ app.get('/boitiers', (req, res) => {
     });
   });
 
+ app.get('/bracelet_texture', (req, res) => {
+  db.all(`
+        SELECT *
+        FROM Bracelet_Texture 
+        `, (err, bracelet_texture) => {
 
-  // Route pour afficher toutes les montres 
-app.get('/watches', (req, res) => {
-  db.all('SELECT * FROM watches', (err, rows) => {
+        if (err) {
+            console.error("Erreur, les textures de bracelets n'ont pas été trouvées :", err.message);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+
+        res.json(bracelet_texture);
+    });
+});
+
+// Route pour afficher toutes les montres 
+app.get('/montre', (req, res) => {
+  db.all('SELECT * FROM Montre', (err, rows) => {
       if (err) {
           console.error('Error fetching watches:', err.message);
           res.status(500).json({ error: 'Internal server error' });
@@ -100,8 +111,37 @@ app.get('/watches', (req, res) => {
 });
 
 
-  
+//route pour afficher une montre avec son id
+// app.get('/montre/:id_montre', (req, res) => {
+//   const { id_montre } = req.params;
 
+//   db.all(`
+//       SELECT m.id_montre, m.nom,
+//           u.pseudo AS dernier_modifieur,
+//           bot.nom AS boitier_texture, bot.prix AS boitier_texture_prix,
+//           bof.nom AS boitier_forme, bof.prix AS boitier_forme_prix,
+//           brf.nom AS bracelet_texture, brf.prix AS bracelet_texture_prix,
+//           p.nom AS pierre_nom, p.prix AS pierre_prix, p.couleur AS pierre_couleur,
+//           m.main_color,
+//       COALESCE(bot.prix, 0) + COALESCE(bof.prix, 0) + COALESCE(brf.prix, 0) + COALESCE(p.prix, 0) AS prix_montre
+//       FROM Montre m 
+//       LEFT JOIN User u ON m.dernier_modifieur = u.id_user
+//       LEFT JOIN Boitier_Texture bot ON m.id_boitier_texture = bot.id_boitier_texture
+//       LEFT JOIN Boitier_Forme bof ON m.id_boitier_forme = bof.id_boitier_forme
+//       LEFT JOIN Bracelet_Texture brf ON m.id_bracelet_texture = brf.id_bracelet_texture
+//       LEFT JOIN Pierre p ON m.id_pierre = p.id_pierre
+//       WHERE m.id_montre = ?
+//       `, [id_montre], (err, montre) => {
+
+//       if (err) {
+//           console.error("Erreur, la montre n'a pas été trouvée : ", err.message);
+//           res.status(500).json({ error: 'Internal server error' });
+//           return;
+//       }
+
+//       res.json(montre);
+//   });
+// });
 
 //----------------------------------------Route POST-------------------------------------//
 
@@ -114,7 +154,7 @@ app.post('/register', (req, res) => {
       return;
   }
   console.log('Trying to create user account...');
-  db.run('INSERT INTO Users (userName, password) VALUES (?, ?)',
+  db.run('INSERT INTO User (pseudo, mdp) VALUES (?, ?)',
       [name, password],
       function (err) {
           const userID = this.lastID;
@@ -130,6 +170,7 @@ app.post('/register', (req, res) => {
       });
 });
 
+// Route pour se connecter
 app.post('/login', (req, res) => {
   const { name, password } = req.body;
   if (!name || !password) {
@@ -138,7 +179,7 @@ app.post('/login', (req, res) => {
   }
   console.log('Trying to log in user...');
   // Recherche de l'utilisateur dans la base de données par le nom d'utilisateur
-  db.get('SELECT * FROM Users WHERE userName = ? AND password = ?', [name, password], (err, user) => {
+  db.get('SELECT * FROM User WHERE pseudo = ? AND mdp = ?', [name, password], (err, user) => {
     if (err) {
       console.error('Error logging in user:', err.message);
       res.status(500).json({ error: 'Internal server error' });
@@ -156,158 +197,65 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Route POST pour ajouter une montre à la base de données
+app.post('/montre/add', (req, res) => {
+  const {nom, boitier_texture, boitier_forme, bracelet_texture, pierre_nom, main_color, dernier_utilisateur } = req.body;
+  console.log(req.body)
 
-// Route POST pour ajouter une pierre à la table Stones
-app.post('/stones/add', (req, res) => {
-  const { name, description, price } = req.body;
-  if (!name || !description || !price) {
-    res.status(400).json({ error: 'stone name, description, and price are required' });
-    return;
-  }
-  console.log('Trying to insert into database...');
-  db.run('INSERT INTO Stones (stoneName, stonePrice,) VALUES (?, ?)', [name, description, price], function (err) {
-    const stone_id = this.lastID; 
-    if (err) {
-      console.error('Error adding pierres:', err.message);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
-    console.log('Insertion successful!');
-    res.json({ stoneID: stone_id, name, description, price });
-  });
-});
-
-// Route POST pour ajouter un bracelet à la table bracelet
-app.post('/bracelets/add', (req, res) => {
-  const { type, price } = req.body;
-  if (!type || !price) {
-    res.status(400).json({ error: 'type, and price are required' });
-    return;
-  }
-  console.log('Trying to insert into database...');
-  db.run('INSERT INTO Bracelets (braceletName, branceletPrice, braceletTexture) VALUES (?, ?, ?)', [type, price], function (err) {
-    const bracelet_id = this.lastID; 
-    if (err) {
-      console.error('Error adding pierres:', err.message);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
-    console.log('Insertion successful!');
-    res.json({ braceletID: bracelet_id, type, price });
-  });
-});
-
-// Route POST pour ajouter un produit au panier d'un utilisateur
-app.post('/users/:userID/cart/add', (req, res) => {
-  const userID = req.params.userID;
-  const { watchID } = req.body;
-
-  // Vérifiez si l'id du produit est fourni
-  if (!watchID) {
-      res.status(400).json({ error: 'ID du produit est requis' });
+  // Vérifie si tous les paramètres sont renseignés
+  if ( !nom || !boitier_texture || !boitier_forme || !bracelet_texture || !pierre_nom || !main_color || !dernier_utilisateur) {
+      res.status(400).json({ error: 'nom, boitier_texture, boitier_forme, bracelet_texture, pierre_nom, main_color dernier_utilisateur are required' });
       return;
   }
 
-  console.log(`Trying to add product ${watchID} to user ${userID}'s cart...`);
+  // vérifie si la montre existe déjà
+  db.all(`
+      SELECT *
+      FROM Montre 
+      WHERE nom = ?
+      `, [nom], (err, montre) => {
 
-  // Vérifiez si l'utilisateur existe
-  db.get('SELECT * FROM Users WHERE userID = ?', [userID], (err, user) => {
       if (err) {
-          console.error('Error checking user:', err.message);
+          console.error("Erreur, les montres n'ont pas pue être récupérées : ", err.message);
           res.status(500).json({ error: 'Internal server error' });
           return;
       }
-      if (!user) {
-          console.log('User not found');
-          res.status(404).json({ error: 'Utilisateur non trouvé' });
-          return;
+
+      // Si la monte n'existe pas déjà, l'ajouter
+      if (montre.length == 0){
+          db.run(`INSERT
+              INTO Montre (
+                nom,
+                boitierTextureID,
+                boitierFormeID,
+                braceletTextureID,
+                pierreID,
+                main_color,
+                dernier_utilisateur               
+            )
+            VALUES (
+                ?,
+                (SELECT boitierTextureID FROM Boitier_Texture WHERE nom = ?),
+                (SELECT boitierFormeID FROM Boitier_Forme WHERE nom = ?),
+                (SELECT braceletTextureID FROM Bracelet_Texture WHERE nom = ?),
+                (SELECT pierreID FROM Pierre WHERE nom = ?),
+                ?,
+                (SELECT userID FROM User WHERE pseudo = ?)
+              )`,
+              [nom, boitier_texture, boitier_forme, bracelet_texture, pierre_nom, main_color, dernier_utilisateur], function (err) {
+              if (err) {
+                  console.error("Erreur, la montre n'a pas pue être créée : ", err.message);
+                  res.status(500).json({ error: 'Internal server error' });
+                  return;
+              }
+              res.json({ message: "Montre créée avec succès." });
+          });
+      } else {
+          res.json({ message : "Cette montre existe déjà" });
       }
-      // Ajoutez le produit au panier de l'utilisateur
-      db.run('INSERT INTO Carts (userID, watchID,) VALUES (?, ? )',
-          [userID, watchID, 'en_attente'],
-          function (insertErr) {
-              if (insertErr) {
-                  console.error('Error adding product to cart:', insertErr.message);
-                  res.status(500).json({ error: 'Internal server error' });
-                  return;
-              }
-              console.log('Product added to cart successfully!');
-              res.json({ success: true, message: `Produit ${watchID} ajouté au panier de l'utilisateur ${userID}` });
-          });
   });
+      
 });
-
-
-// Route POST pour ajouter une montre à la base de données
-app.post('/watches/add', (req, res) => {
-  const { userID, boitierID, stoneID, braceletID } = req.body;
-
-  // Vérifiez si les informations nécessaires sont fournies
-  if (!userID || !boitierID || !stoneID || !braceletID) {
-      res.status(400).json({ error: 'Toutes les informations nécessaires sont requises pour ajouter une montre' });
-      return;
-  }
-
-  console.log('Trying to add a watch to the database...');
-
-  // Exécutez la requête d'insertion dans la table des Montres
-  db.run('INSERT INTO Watches (boitierID, stoneID, braceletID) VALUES (?, ?, ?)',
-      [boitierID, stoneID, braceletID],
-      function (err) {
-          if (err) {
-              console.error('Error adding watch:', err.message);
-              res.status(500).json({ error: 'Internal server error' });
-              return;
-          }
-
-          const watchID = this.lastID;
-
-          // Enregistrez l'association entre l'utilisateur et la montre dans la table de liaison
-          db.run('INSERT INTO UserWatches (userID, watchID) VALUES (?, ?)', [userID, watchID], insertErr => {
-              if (insertErr) {
-                  console.error('Error adding user-watch association:', insertErr.message);
-                  res.status(500).json({ error: 'Internal server error' });
-                  return;
-              }
-
-              console.log('User-watch association added successfully!');
-              res.json({ watchID, userID, boitierID, stoneID, braceletID });
-          });
-      });
-});
-
-
-
-
-
-app.post('/watch/add', (req, res) => {
-  const { userID, stoneID, braceletID, boitierID, watchPrice, totalPrice } = req.body;
-  if (!userID || !stoneID || !braceletID || !boitierID || !watchPrice || !totalPrice) {
-    res.status(400).json({ error: 'userID, stoneID, braceletID, boitierID, watchPrice, and totalPrice are required' });
-    return;
-  }
-  
-  console.log('Trying to insert into database...');
-  
-  
-  db.run('INSERT INTO Watches (userID, stoneID, braceletID, boitierID, watchPrice, totalPrice) SELECT', 
-         [userID, stoneID, braceletID, boitierID, watchPrice, totalPrice], 
-         function (err) {
-    if (err) {
-      console.error('Error adding watch:', err.message);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-
-    const watchID = this.lastID;
-    console.log('Insertion successful!');
-    res.json({ watchID, userID, stoneID, braceletID, boitierID, watchPrice, totalPrice });
-  });
-  
-});
-
 
 
 

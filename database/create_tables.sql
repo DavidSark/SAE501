@@ -1,66 +1,67 @@
 
-
---Table pierre
-CREATE TABLE Stones (
-    stoneID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    stoneName VARCHAR(50),
-    stonePrice DECIMAL(10, 2)
+CREATE TABLE Boitier_Texture (
+    boitierTextureID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nom TEXT,
+    prix FLOAT
 );
 
-
 --Table boitier
-CREATE TABLE Boitiers (
-    boitierID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    boitierForm TEXT,
-    boitierPrice DECIMAL(10, 2)
+CREATE TABLE Boitier_Forme (
+    boitierFormeID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nom TEXT,
+    prix FLOAT
 );
 
 --Table bracelet
-CREATE TABLE Bracelets (
-    braceletID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    braceletTexture TEXT,
-    braceletPrice DECIMAL(10, 2)
+CREATE TABLE Bracelet_Texture(
+    braceletTextureID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nom TEXT,
+    prix FLOAT
 );
+
+
+--Table pierre
+CREATE TABLE Pierre (
+    pierreID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    nom TEXT,
+    prix FLOAT,
+    couleur TEXT
+);
+
 
 --Table utilisateurs
-CREATE TABLE Users (
+CREATE TABLE User (
     userID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    userName VARCHAR(50),
-    password VARCHAR(100)
+    pseudo TEXT UNIQUE,
+    mdp TEXT
 );
 
---Table panier
-CREATE TABLE Carts (
-    cartID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    userID INT,
-    watchID INT,
-    userWatchID INT,
-    FOREIGN KEY (userID) REFERENCES Users(userID),
-    FOREIGN KEY (userWatchID) REFERENCES UserWatches(userID),
-    FOREIGN KEY (watchID) REFERENCES Watches(watchID)
-);
 
 --Table montres
-CREATE TABLE Watches (
-    watchID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    userID INT,
-    stoneID INT,
-    braceletID INT,
-    boitierID INT,
-    watchPrice DECIMAL(10, 2),
-    totalPrice DECIMAL(10, 2),
-    FOREIGN KEY (userID) REFERENCES Users(UserID),
-    FOREIGN KEY (boitierID) REFERENCES Boitiers(boitierID),
-    FOREIGN KEY (stoneID) REFERENCES Stones(stoneID),
-    FOREIGN KEY (braceletID) REFERENCES Bracelets(braceletID)
+CREATE TABLE Montre (
+    montreID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+    nom TEXT UNIQUE,
+    pierreID INT,
+    braceletTextureID INT,
+    boitierTextureID INT,
+    boitierFormeID INT,
+    main_color TEXT,
+    dernier_utilisateur INTEGER,
+    FOREIGN KEY (pierreID) REFERENCES Pierre(pierreID),
+    FOREIGN KEY (braceletTextureID) REFERENCES Bracelet_Texture(braceletTextureID),
+    FOREIGN KEY (boitierTextureID) REFERENCES Boitier_Texture(boitierTextureID),
+    FOREIGN KEY (dernier_utilisateur) REFERENCES User(userID),
+    FOREIGN KEY (boitierFormeID) REFERENCES Boitier_Forme(boitierFormeID)
 );
 
 
---Table montre des utilisateurs
-CREATE TABLE UserWatches (
-    userWatchID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+
+--Table panier
+CREATE TABLE Panier (
     userID INT,
-    watchID INT,
-    FOREIGN KEY (userID) REFERENCES Users(userID),
-    FOREIGN KEY (watchID) REFERENCES Watches(watchID)
+    montreID INT,
+    PRIMARY KEY (userID, montreID),
+    FOREIGN KEY (userID) REFERENCES User(userID),
+    FOREIGN KEY (montreID) REFERENCES Montre(montreID)
 );
+

@@ -1,62 +1,60 @@
 <script setup>
 
 
-
+/////////////////////////////////////////////////////////////////
+//Ajout de ref + vérification de la connexion entre le client et la bdd
 const apiData = ref([]);
 const apiData2 = ref([]);
-
 onBeforeMount(async () => {
   try {
-    const response = await client.get('/stones');
+    const response = await client.get('/pierres');
     apiData.value = response.data;
   } catch (error) {
     console.error('Erreur lors de la récupération des données de l\'API', error);
   }
 });
-
 onBeforeMount(async () => {
   try {
-    const response = await client.get('/watches');
+    const response = await client.get('/montre');
     apiData2.value = response.data;
   } catch (error) {
     console.error('Erreur lors de la récupération des données de l\'API', error);
   }
 });
+///////////////////////////////////////////////////////////////
 
-//Connexion utilisateur
 
 </script>
 
 <template>
-    <div>
-        <Header></Header>
-        <br>
-        pierres: 
-        <br>
-        <ul>
-        <li v-for="item in apiData" :key="item.id">
-            
-            {{ item.stoneName }}
-            {{ item.stonePrice }}€
-       
+  <div>
+    <Header></Header>
 
-        </li>
-        </ul>
-<br>
-        Montres : 
-        <ul>
-          <li v-for="item in apiData2" :key="item.id">
-            
-            {{ item}}
-         
-       
 
-        </li>
-        </ul>
-    </div>
+    
+    <!-- Appel des données dans le html pour tester-->
+    <br>
+    pierres:
+    <br>
+    <ul>
+      <li v-for="item in apiData" :key="item.id">
+        {{ item.nom }}
+        {{ item.prix }}€
+      </li>
+    </ul>
+    <br>
+    Montres :
+    <ul>
+      <li v-for="item in apiData2" :key="item.id">
+        {{ item }}
+      </li>
+    </ul>
+     <!-- Fin de l'appel des données dans le html pour tester-->
+
+
+
+
+  </div>
 </template>
 
-<style lang="scss" scoped>
-
-
-</style>
+<style lang="scss" scoped></style>
