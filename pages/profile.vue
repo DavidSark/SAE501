@@ -12,6 +12,8 @@
 import { useGlobalStore } from '@/stores/global'
 const store = useGlobalStore()
 import { useRouter } from 'vue-router';
+
+
 const router = useRouter();
 const logoutMessage = ref('');
 definePageMeta({
@@ -21,6 +23,7 @@ definePageMeta({
     'auth',
   ],
 });
+
 
 const logout = () => {
   store.logout();

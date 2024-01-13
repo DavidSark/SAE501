@@ -5,11 +5,12 @@ INSERT INTO User (pseudo, mdp) VALUES ('David', 'david');
 
 
 -- Insert data into "Bracelet_Texture" table
-INSERT INTO Bracelet_Texture (nom, prix) VALUES ('Métal', 5.00);
-INSERT INTO Bracelet_Texture (nom, prix) VALUES ('Tissus', 10.00);
-INSERT INTO Bracelet_Texture (nom, prix) VALUES ('Cuir', 15.00);
+INSERT INTO Bracelet_Texture (nom, prix) VALUES ('cuir-blanc', 5.00);
+INSERT INTO Bracelet_Texture (nom, prix) VALUES ('tissus-marron', 10.00);
+INSERT INTO Bracelet_Texture (nom, prix) VALUES ('tissus-or', 15.00);
 
 -- Insert data into "Pierre" table
+INSERT INTO Pierre (nom, prix, couleur) VALUES ('aucunes', 00.00, "none");
 INSERT INTO Pierre (nom, prix, couleur) VALUES ('Rubis', 150.00, '#ff0000');
 INSERT INTO Pierre (nom, prix, couleur) VALUES ('Diamant',300.00, '#0000ff');
 INSERT INTO Pierre (nom, prix, couleur) VALUES ('Emeraude',200.00, '#00ff00');
@@ -29,16 +30,18 @@ INSERT INTO Boitier_Texture (nom, prix) VALUES ('white05', 9.99);
 -- Insert data into "Boitier_Forme" table
 INSERT INTO Boitier_Forme (nom, prix) VALUES ('boitier_carre', 4.00);
 INSERT INTO Boitier_Forme (nom, prix) VALUES ('boitier_rond',8.00);
-INSERT INTO Boitier_Forme (nom, prix) VALUES ('boitier_bouton',16.00);
+
 
 -- Insert data into "Montre" table
-INSERT INTO Montre (nom, boitierTextureID, boitierFormeID, braceletTextureID, pierreID, main_color, dernier_utilisateur) VALUES ("montre 1", 4, 2, 3, 2, '#ff00ff', 1);
-INSERT INTO Montre (nom, boitierTextureID, boitierFormeID, braceletTextureID,  pierreID, main_color, dernier_utilisateur) VALUES ("montre 2", 1, 1, 1, 1, '#ff00ff', 1);
-INSERT INTO Montre (nom, boitierTextureID, boitierFormeID, braceletTextureID,  pierreID, main_color, dernier_utilisateur) VALUES ("montre 3", 2, 2, 2, 2, '#ff00ff', 2);
+INSERT INTO Montre (nom, boitierTextureID, boitierFormeID, braceletTextureID, pierreID, main_color, userID) VALUES ("montre 1", 4, 2, 3, 2, '#ff00ff', 1);
+INSERT INTO Montre (nom, boitierTextureID, boitierFormeID, braceletTextureID,  pierreID, main_color, userID) VALUES ("montre 2", 1, 1, 1, 1, '#ff00ff', 1);
+INSERT INTO Montre (nom, boitierTextureID, boitierFormeID, braceletTextureID,  pierreID, main_color, userID) VALUES ("montre 3", 2, 2, 2, 2, '#ff00ff', 2);
 
 
 
-
+INSERT INTO Panier (userID, montreID) VALUES (1, 1);
+INSERT INTO Panier (userID, montreID) VALUES (1, 2);
+INSERT INTO Panier (userID, montreID) VALUES (2, 3);
 
 
 

@@ -34,16 +34,47 @@ app.get('/', (req, res) => {
   res.send('Bienvenue sur la page d\'accueil');
 });
 
-
 // Route pour afficher tous les utilisateurs
-app.get('/users', (req, res) => {
-  db.all('SELECT * FROM user', (err, rows) => {
+app.get('/user', (req, res) => {
+  db.all('SELECT * FROM user', (err, user) => {
       if (err) {
           console.error('Error fetching users:', err.message);
           res.status(500).json({ error: 'Internal server error' });
           return;
       }
-      res.json(rows); 
+      res.json(user); 
+  });
+});
+
+// Route pour afficher tous les utilisateurs
+app.get('/user/:id_user', (req, res) => {
+  const { id_user } = req.params;
+
+  db.all(`
+      SELECT m.montreID, m.nom,
+          u.pseudo AS createur,
+          bot.nom AS boitier_texture, bot.prix AS boitier_texture_prix,
+          bof.nom AS boitier_forme, bof.prix AS boitier_forme_prix,
+          brf.nom AS bracelet_texture, brf.prix AS bracelet_texture_prix,
+          p.nom AS pierre_nom, p.prix AS pierre_prix, p.couleur AS pierre_couleur,
+          m.main_color,
+      COALESCE(bot.prix, 0) + COALESCE(bof.prix, 0) + COALESCE(brf.prix, 0) + COALESCE(p.prix, 0) AS prix_montre
+      FROM Montre m 
+      JOIN User u ON m.userID = u.userID
+      JOIN Boitier_Texture bot ON m.boitierTextureID = bot.boitierTextureID
+      JOIN Boitier_Forme bof ON m.boitierFormeID = bof.boitierFormeID
+      JOIN Bracelet_Texture brf ON m.braceletTextureID = brf.braceletTextureID
+      JOIN Pierre p ON m.pierreID = p.pierreID
+      WHERE m.userID = ?
+      `, [id_user], (err, user) => {
+
+      if (err) {
+          console.error("Erreur, le user n'a pas été trouvé : ", err.message);
+          res.status(500).json({ error: 'Internal server error' });
+          return;
+      }
+
+      res.json(user);
   });
 });
 
@@ -111,51 +142,23 @@ app.get('/montre', (req, res) => {
 });
 
 
-//route pour afficher une montre avec son id
-// app.get('/montre/:id_montre', (req, res) => {
-//   const { id_montre } = req.params;
 
-//   db.all(`
-//       SELECT m.id_montre, m.nom,
-//           u.pseudo AS dernier_modifieur,
-//           bot.nom AS boitier_texture, bot.prix AS boitier_texture_prix,
-//           bof.nom AS boitier_forme, bof.prix AS boitier_forme_prix,
-//           brf.nom AS bracelet_texture, brf.prix AS bracelet_texture_prix,
-//           p.nom AS pierre_nom, p.prix AS pierre_prix, p.couleur AS pierre_couleur,
-//           m.main_color,
-//       COALESCE(bot.prix, 0) + COALESCE(bof.prix, 0) + COALESCE(brf.prix, 0) + COALESCE(p.prix, 0) AS prix_montre
-//       FROM Montre m 
-//       LEFT JOIN User u ON m.dernier_modifieur = u.id_user
-//       LEFT JOIN Boitier_Texture bot ON m.id_boitier_texture = bot.id_boitier_texture
-//       LEFT JOIN Boitier_Forme bof ON m.id_boitier_forme = bof.id_boitier_forme
-//       LEFT JOIN Bracelet_Texture brf ON m.id_bracelet_texture = brf.id_bracelet_texture
-//       LEFT JOIN Pierre p ON m.id_pierre = p.id_pierre
-//       WHERE m.id_montre = ?
-//       `, [id_montre], (err, montre) => {
 
-//       if (err) {
-//           console.error("Erreur, la montre n'a pas été trouvée : ", err.message);
-//           res.status(500).json({ error: 'Internal server error' });
-//           return;
-//       }
 
-//       res.json(montre);
-//   });
-// });
 
 //----------------------------------------Route POST-------------------------------------//
 
 
 // Route pour créer un compte utilisateur
 app.post('/register', (req, res) => {
-  const { name, password} = req.body;
-  if (!name || !password) {
-      res.status(400).json({ error: 'Name, password, are required' });
+  const { pseudo, mdp} = req.body;
+  if (!pseudo || !mdp) {
+      res.status(400).json({ error: 'pseudo, mdp, are required' });
       return;
   }
   console.log('Trying to create user account...');
   db.run('INSERT INTO User (pseudo, mdp) VALUES (?, ?)',
-      [name, password],
+      [pseudo, mdp],
       function (err) {
           const userID = this.lastID;
 
@@ -166,34 +169,34 @@ app.post('/register', (req, res) => {
           }
 
           console.log('User account creation successful!');
-          res.json({ userID, name, password});
+          res.json({ userID, pseudo, mdp});
       });
 });
 
 // Route pour se connecter
 app.post('/login', (req, res) => {
-  const { name, password } = req.body;
-  if (!name || !password) {
+  const { pseudo, mdp } = req.body;
+  if (!pseudo || !mdp) {
     res.status(400).json({ error: 'Nom d\'utilisateur et mot de passe sont requis pour se connecter' });
     return;
   }
   console.log('Trying to log in user...');
   // Recherche de l'utilisateur dans la base de données par le nom d'utilisateur
-  db.get('SELECT * FROM User WHERE pseudo = ? AND mdp = ?', [name, password], (err, user) => {
+  db.get('SELECT * FROM User WHERE pseudo = ? AND mdp = ?', [pseudo, mdp], (err, user) => {
     if (err) {
       console.error('Error logging in user:', err.message);
       res.status(500).json({ error: 'Internal server error' });
       return;
     }
     if (!user) {
-      console.log('User not found or incorrect password');
+      console.log('User not found or incorrect mdp');
       res.status(401).json({ error: 'Utilisateur non trouvé ou mot de passe incorrect' });
       return;
     }
     // Envoyer une réponse JSON pour signaler la connexion réussie
     res.json({ token: user.userID });
 
-    console.log(`${name} connecté avec succès!`);
+    console.log(`${pseudo} connecté avec succès!`);
   });
 });
 

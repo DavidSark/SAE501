@@ -19,7 +19,7 @@
 
   
   const getMontre = async () => {
-    const response = await API.get(`/montre/${route.params.id}`)
+    const response = await client.get(`/montre/${route.params.id}`)
     montre.value = response.data[0]
     montrePreview.value = response.data[0]
 }

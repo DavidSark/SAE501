@@ -2,21 +2,21 @@
 CREATE TABLE Boitier_Texture (
     boitierTextureID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     nom TEXT,
-    prix FLOAT
+    prix DECIMAL(5,2)
 );
 
 --Table boitier
 CREATE TABLE Boitier_Forme (
     boitierFormeID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     nom TEXT,
-    prix FLOAT
+    prix DECIMAL(5,2)
 );
 
 --Table bracelet
 CREATE TABLE Bracelet_Texture(
     braceletTextureID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     nom TEXT,
-    prix FLOAT
+    prix DECIMAL(5,2)
 );
 
 
@@ -24,7 +24,7 @@ CREATE TABLE Bracelet_Texture(
 CREATE TABLE Pierre (
     pierreID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     nom TEXT,
-    prix FLOAT,
+    prix DECIMAL(5,2),
     couleur TEXT
 );
 
@@ -46,12 +46,12 @@ CREATE TABLE Montre (
     boitierTextureID INT,
     boitierFormeID INT,
     main_color TEXT,
-    dernier_utilisateur INTEGER,
+    userID INTEGER,
     FOREIGN KEY (pierreID) REFERENCES Pierre(pierreID),
     FOREIGN KEY (braceletTextureID) REFERENCES Bracelet_Texture(braceletTextureID),
     FOREIGN KEY (boitierTextureID) REFERENCES Boitier_Texture(boitierTextureID),
-    FOREIGN KEY (dernier_utilisateur) REFERENCES User(userID),
-    FOREIGN KEY (boitierFormeID) REFERENCES Boitier_Forme(boitierFormeID)
+    FOREIGN KEY (boitierFormeID) REFERENCES Boitier_Forme(boitierFormeID),
+    FOREIGN KEY (userID) REFERENCES User(userID)
 );
 
 

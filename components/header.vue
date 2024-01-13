@@ -1,4 +1,10 @@
 <script setup>
+import { useGlobalStore } from '@/stores/global'
+const store = useGlobalStore()
+
+const isLoggedIn = computed(() => {
+    return store.token && store.token !== '';
+});
 
 </script>
 
@@ -16,10 +22,17 @@
         </div>
 
         <div class="m-container__right">
-           <div class="a-log">
-                
-            <nuxt-link to="/login">login</nuxt-link>
+            <div class="a-log"  v-if="store.token == null"> 
+                <nuxt-link to="/login">Connexion</nuxt-link>
+            </div>
+            <div class="a-log" v-else-if="store.token != null"> 
+                <nuxt-link to="/profile">Profile</nuxt-link>
            </div>
+
+           <div class="a-log" v-else> 
+                <nuxt-link to="/profile">register</nuxt-link>
+           </div>
+            
            <div class="a-cart">
             <img src="/icons/shopping-bag.svg" alt="">
                 <div>
@@ -32,8 +45,6 @@
 </template>
 
 <style lang="scss" scoped>
-
-
 .o-container{
   background-color: $brown;
   color: $orange;
@@ -47,9 +58,7 @@
         align-items: center;
         justify-content: space-between;
         width: rem(300);
-      
     }
-
   .m-container__middle{
     display:flex;
     flex-direction: column;
