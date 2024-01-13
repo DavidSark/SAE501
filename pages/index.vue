@@ -46,7 +46,7 @@ onBeforeMount(async () => {
     Montres :
     <ul>
       <li v-for="item in apiData2" :key="item.id">
-        {{ item }}
+       <pre>{{ item }}</pre>
       </li>
     </ul>
      <!-- Fin de l'appel des données dans le html pour tester-->
