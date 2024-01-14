@@ -124,7 +124,12 @@
     </main>
 </template>
   
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.canvas {
+        width: rem(1000);
+    }
+</style>
   
 <script setup>
 import { client } from '@/utils/axios.js'

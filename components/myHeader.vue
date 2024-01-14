@@ -34,7 +34,7 @@ const isLoggedCart = computed(() =>{
                     <div>produits</div>
                 </nuxt-link>
                 <nuxt-link to="/montre/creation" v-if="store.token != null">
-                    <div>custimiser</div>
+                    <div>customiser</div>
                 </nuxt-link>
             
             </div>
