@@ -2,13 +2,13 @@ export const useGlobalStore = defineStore("global", {
   state: () => ({
     token: null, // pour la connexion
     userID: null, // identifiant de l'utilisateur
+    showRegisterForm: false,
   }),
   actions: {
 
-    extractuserIDFromToken(token) {
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      return decodedToken.userID; // ou tout autre champ qui représente l'userID dans votre token
-    },
+    toggleRegisterForm() {
+      this.showRegisterForm = !this.showRegisterForm;
+  },
     setToken(token){
       if (token){
         this.token = token;

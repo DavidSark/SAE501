@@ -6,8 +6,6 @@
 
 <style lang="scss">
 .my_title{
-  
-
     &__texte{
       color: red;
     }

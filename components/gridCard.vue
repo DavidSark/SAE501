@@ -1,5 +1,5 @@
 <template>
-    <ul class="grid_card">
+    <ul class="o-grid-card">
       <li v-for="valeur in valeurMontres">
         <myCard :valeur="valeur"/>
       </li>
@@ -7,11 +7,11 @@
 </template>
 
 <style lang="scss">
-.grid_card {
+.o-grid-card {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
- 
+    justify-content: space-between;
+    gap:rem(50)
 }
 </style>
   

@@ -1,5 +1,6 @@
 <template>
     <div>
+      
       <input v-model="name" type="text" placeholder="Nom">
       <input v-model="password" type="password" placeholder="Mot de passe">
       <button @click="register">Créer un compte</button>

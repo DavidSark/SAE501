@@ -1,7 +1,5 @@
 <script setup>
 import { useGlobalStore } from '@/stores/global'
-
-
 const store = useGlobalStore()
 const route = useRouter()
 
@@ -35,23 +33,19 @@ const isLoggedCart = computed(() =>{
                 <nuxt-link to="/montre">
                     <div>products</div>
                 </nuxt-link>
-                <nuxt-link to="/montre/creation">
+                <nuxt-link to="/montre/creation" v-if="store.token != null">
                     <div>customize</div>
                 </nuxt-link>
-                 <nuxt-link to="">
-                    <div>contact</div>
-                </nuxt-link>
+            
             </div>
         </div>
         <div class="m-container__right">
-            <div class="a-log" v-if="store.token == null">
-                <nuxt-link to="/login">S'inscrire</nuxt-link>
-            </div>
+            
             <div class="a-log" v-if="store.token != null">
-                <nuxt-link to="/profile">Profile</nuxt-link>
+                <myButton lien="/profile">Profile</myButton>
             </div>
 
-            <div class="a-cart" >
+            <div class="a-cart" v-if="store.token != null">
                 <img src="/icons/shopping-bag.svg" alt="">
                 <div>
                     <nuxt-link to="/profile">Cart</nuxt-link>
@@ -64,11 +58,12 @@ const isLoggedCart = computed(() =>{
 
 <style lang="scss" scoped>
 .o-container {
-    background-color: transparent;
+    z-index: 9999;
+    background-color: $white;
     font-family: $font-poppins;
     display: flex;
     justify-content: space-between;
-    position: absolute;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
@@ -79,9 +74,9 @@ const isLoggedCart = computed(() =>{
         align-items: center;
         justify-content: space-between;
         width: 50%;
-        color: $white;
+        color: $black;
         text-transform: uppercase;
-
+      
         .a-container-logo {
             a {
                 color: inherit;
@@ -93,7 +88,8 @@ const isLoggedCart = computed(() =>{
                 cursor: pointer;
 
                 img {
-                    width: rem(20)
+                    width: rem(20);
+                    filter: invert(14%) sepia(11%) saturate(405%) hue-rotate(190deg) brightness(96%) contrast(89%);
                 }
 
                 h1 {
@@ -109,7 +105,7 @@ const isLoggedCart = computed(() =>{
         .a-container-txt {
             display: flex;
             gap: rem(60);
-            margin-right: rem(120);
+            margin-right: rem(0);
 
             a {
                 color: inherit;
@@ -123,7 +119,7 @@ const isLoggedCart = computed(() =>{
                 }
 
                 :hover {
-                    border-color: $white;
+                    border-color: $black;
                 }
             }
 
@@ -139,31 +135,6 @@ const isLoggedCart = computed(() =>{
         width: 50%;
         gap: rem(80);
         text-transform: uppercase;
-
-        .a-log {
-            background: transparent;
-            padding: rem(12) rem(30);
-            border: 1px solid $black;
-
-            transition: all .4s;
-            cursor: pointer;
-
-            a {
-                text-decoration: none;
-                color: $black;
-                transition: all .4s;
-
-            }
-        }
-
-        .a-log:hover {
-            background-color: $black;
-            border: 1px solid $black;
-
-            a {
-                color: $white;
-            }
-        }
 
         .a-cart {
             display: flex;
