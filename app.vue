@@ -10,7 +10,7 @@
 <style lang="scss" >
 
 body{
-  background: rgb(156, 156, 156);
+  background: #2B2C30;
   
 }
 </style>

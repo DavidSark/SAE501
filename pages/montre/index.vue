@@ -45,6 +45,7 @@
 
 <style lang="scss">
 .o-container-montre {
+    margin-bottom:rem(200);
     background: $black;
     height: 100vh;
     padding: rem(100) rem(80);
@@ -82,7 +83,7 @@
         display: flex;
         gap:rem(20);
         justify-content: center;
-        margin-top: rem(50);
+        margin: rem(50) rem(0);
     }
 }
 </style>
