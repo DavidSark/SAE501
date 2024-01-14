@@ -9,7 +9,8 @@
                 <p class="prix">{{ valeur.prix_montre }} €</p>
             </div>
     
-            <myButton class="my_card__content--bouton" :lien="`/montre/${valeur.id_montre}`">Voir</myButton>
+            <myButton class="my_card__content--bouton" :lien="`/montre/${valeur.montreID}`">Voir</myButton>
+           
         </div>
     </div>
 </template>
