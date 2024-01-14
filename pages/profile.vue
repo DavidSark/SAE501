@@ -1,47 +1,93 @@
 <template>
-    <main class="compte">
-        <myTitle>Mon Espace</myTitle>
+    <main class="o-profile">
+        <h2>Mon Espace</h2>
+        <section class="o-profile-montres">
 
-        <section class="compte__section">
-            <h2>Mes Montres</h2>
-            <gridCard :valeurMontres="mesMontres"/>
-            <p v-if="mesMontres.length == 0" class="compte__section--texte">Vous n'avez créé aucune montre.</p>
+            <div class="o-profile-montres-title-button">
+                <h2>Vos Montres</h2>
+                <myButton color="white" lien="/montre/creation">Créer une montre</myButton>
+            </div>
 
-            <myButton class="compte__bouton" lien="/montre/creation">Créer une montre</myButton>
+            <gridCard class="o-profile-center" :valeurMontres="mesMontres" />
+            <p v-if="mesMontres.length == 0">Vous n'avez créé aucune montre.</p>
+
+
         </section>
 
-        <hr class="compte__deco"/>
-        
-        <section class="compte__section">
-            <h2>Mon Panier</h2>
-            <gridCard :valeurMontres="monPanier"/>
-            <p v-if="monPanier.length == 0" class="compte__section--texte">Votre panier est vide.</p>
-            
-            <myButton v-if="monPanier.length != 0" class="compte__bouton" @click="suppPanier = 'acheter'">Acheter mon panier</myButton>
-            <myButton v-if="monPanier.length != 0" color="black" class="compte__bouton"  @click="suppPanier = 'vider'">Vider mon panier</myButton>
+        <hr />
 
-            <div v-if="suppPanier.length != 0" class="compte__popup compte__popup--acheter">
+        <section class="o-profile-panier">
+            <h2>Mon Panier</h2>
+            <gridCard class="o-profile-center" :valeurMontres="monPanier" />
+            <p v-if="monPanier.length == 0">Votre panier est vide.</p>
+
+            <div class="o-profile-panier-space">
+                <myButton v-if="monPanier.length != 0" color="white" @click="suppPanier = 'acheter'">Acheter mon panier
+                </myButton>
+                <myButton v-if="monPanier.length != 0" color="white" @click="suppPanier = 'vider'">Vider mon panier
+                </myButton>
+            </div>
+            <div v-if="suppPanier.length != 0">
                 <p v-if="suppPanier == 'acheter'">Votre commande a été passée avec succès.</p>
                 <p v-if="suppPanier == 'acheter'">Merci de votre commande !</p>
 
                 <p v-if="suppPanier == 'vider'">Votre panier a été vidé avec succès.</p>
 
-                <myButton @click="videPanier()">Ok</myButton>
+                <myButton color="white" @click="videPanier()">Ok</myButton>
             </div>
         </section>
 
-        <hr class="compte__deco"/>
+        <hr />
 
         <p>{{ logoutMessage }}</p>
-        <button @click="logout">Déconnexion</button>
+        <myButton @click="logout">Déconnexion</myButton>
     </main>
-    
-  </template>
+</template>
+
+<style lang="scss" scoped>
+.o-profile {
+    margin-bottom: rem(200);
+    background: $black;
+    height: 100vh;
+    padding: rem(100) rem(80);
+    text-transform: uppercase;
+    color: $white;
+    font-family: $font-poppins;
+    &-center {
+        margin: 0 auto rem(60) auto;
+    }
+
+    h2 {
+        margin-top: rem(20);
+        font-size: 3vw;
+    }
+
+   &-panier{
+    &-space {
+        display: flex;
+        gap: rem(50);
+        margin-bottom: rem(50) ;
+    }
+   }
+
+    .o-profile-montres {
+        h2 {
+            font-size: 1.5vw
+        }
+
+        &-title-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}
+</style>
   
-  <script setup lang="ts">
+<script setup lang="ts">
 import { useGlobalStore } from '@/stores/global'
 import { useRouter } from 'vue-router';
-import {client} from '@/utils/axios'
+import { client } from '@/utils/axios'
 
 const store = useGlobalStore()
 const router = useRouter();
@@ -83,9 +129,9 @@ const videPanier = async () => {
 
 
 const logout = () => {
-  store.logout();
- alert('Déconnecté avec succès')
- router.push('/')
+    store.logout();
+    alert('Déconnecté avec succès')
+    router.push('/')
 };
 
 onMounted(async () => {
@@ -94,11 +140,11 @@ onMounted(async () => {
 })
 
 definePageMeta({
-  middleware: [
-    function (to, from) {
-    },
-    'auth',
-  ],
+    middleware: [
+        function (to, from) {
+        },
+        'auth',
+    ],
 });
 
 

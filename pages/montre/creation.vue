@@ -1,112 +1,168 @@
 
 
 <template>
-  <div>
-    <h1>Création d'une Montre</h1>
-
-    <div class="canvas">
-                <threejs v-bind="montre"/>
-            </div>
-
-        <!-- <ul>
-            <li v-for="(m, key) in montre" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
-        </ul> -->
-
-        <br>
-        <hr>
-        <br>
-        <div class="crea_montre__rendu">
-        
-            <ul class="crea_montre__rendu--infos">
-                <li class="info info__nom">{{ montre.nom }}</li>
-
-                <li class="info">
-                    Bracelet Texture (<span class="info__valeur">{{ montre.bracelet_texture }}</span>) :
-                    <span class="info__prix">{{ montre.bracelet_texture_prix }} €</span>
-                </li>
-                <li class="info">
-                    Boitier Texture (<span class="info__valeur">{{ montre.boitier_texture }}</span>) :
-                    <span class="info__prix">{{ montre.boitier_texture_prix }} €</span>
-                </li>
-                <li class="info">
-                    Boitier Forme (<span class="info__valeur">{{ montre.boitier_forme }}</span>) :
-                    <span class="info__prix">{{ montre.boitier_forme_prix }} €</span>
-                </li>
-                <li class="info">
-                    Pierre (<span class="info__valeur">{{ montre.pierre_nom }}</span>) :
-                    <span class="info__prix">{{ montre.pierre_prix }} €</span>
-                </li>
-                <li class="info">
-                    Prix total : <span class="info__prix">{{ montre.prix_montre }} €</span>
-                </li>
-
-                <li class="info info__message">
-                    <p v-if="message">{{ message }}</p>
-                    <p v-else>(Enregistrez cette montre pour pouvoir l'ajouter à votre panier)</p>
-                </li>
-            </ul>
+    <div class="o-creation">
+        <h2>Créez votre montre !</h2>
+        <div class="canvas">
+            <threejs v-bind="montre"/>
         </div>
-        <br>
-        <hr>
-        <br>
-        <form @submit.prevent="creerMontre" method="post" class="crea_montre__form">
-
-            <div class="crea_montre__form--input">
-                <label for="nom">Nom de la Montre</label>
-                <input class="crea_montre__form--input" type="text" name="nom" id="nom" required v-model="montre.nom">
+        <div class="o-creation-content">
+            <div class="o-creation-content-rendu">
+                <ul class="o-creation-content-rendu__infos">
+                    <li>Nom : {{ montre.nom }}</li>
+                    <li>
+                        Bracelet Texture : <span>{{ montre.bracelet_texture }}</span>
+                    </li>
+                    <li>
+                        Boitier Texture : <span>{{ montre.boitier_texture }}</span>
+                    </li>
+                    <li>
+                        Boitier Forme : <span>{{ montre.boitier_forme }}</span>
+                    </li>
+                    <li>
+                        Pierre : <span>{{ montre.pierre_nom }}</span>
+                    </li>
+                    <li>
+                        <p v-if="message">{{ message }}</p>
+                    </li>
+                </ul>
             </div>
 
-            <div class="crea_montre__form--input">
-                <label for="dernier_modifieur">Pseudo du créateur</label>
-                <input class="crea_montre__form--input" disabled type="text" name="dernier_modifieur" id="dernier_modifieur" required v-model="montre.createur">
-            </div>
+            <form @submit.prevent="creerMontre" method="post">
+                <div class="m-creation-form">
+                    <label for="nom">Nom: </label>
+                    <input type="text" name="nom" id="nom" required v-model="montre.nom">
+                </div>
 
-            <div class="crea_montre__form--input">
-                <label for="boitier_texture">Texture du Boitier</label>
-                <select class="crea_montre__form--select" name="boitier_texture" id="boitier_texture" v-model="montre.boitier_texture">
-                    <option v-for="b in boitier_texture" :key="b.boitierTextureID" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-                </select>
-            </div>
+                <div class="m-creation-form">
+                    <label for="dernier_modifieur">Créateur: </label>
+                    <input disabled type="text" name="dernier_modifieur" id="dernier_modifieur" required
+                        v-model="montre.createur">
+                </div>
 
-            <div class="crea_montre__form--input">
-                <label for="boitier_forme">Forme du Boitier</label>
-                <select class="crea_montre__form--select" name="boitier_forme" id="boitier_forme" v-model="montre.boitier_forme">
-                    <option v-for="b in boitier_forme" :key="b.boitierFormeID" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-                </select>
-            </div>
+                <div class="m-creation-form">
+                    <label for="boitier_texture">Texture du boitier:</label>
+                    <select class="m-creation-form-select" name="boitier_texture" id="boitier_texture"
+                        v-model="montre.boitier_texture">
+                        <option v-for="b in boitier_texture" :key="b.boitierTextureID" :value="b.nom" @click="updatePrice">
+                            {{
+                                b.nom }}</option>
+                    </select>
+                </div>
 
-            <div class="crea_montre__form--input">
-                <label for="bracelet_texture">Texture du Bracelet</label>
-                <select class="crea_montre__form--select" name="bracelet_texture" id="bracelet_texture" v-model="montre.bracelet_texture">
-                    <option v-for="b in bracelet_texture" :key="b.braceletTextureID" :value="b.nom" @click="updatePrice">{{ b.nom }}</option>
-                </select>
-            </div>
+                <div class="m-creation-form">
+                    <label for="boitier_forme">Forme du boitier: </label>
+                    <select class="m-creation-form-select" name="boitier_forme" id="boitier_forme"
+                        v-model="montre.boitier_forme">
+                        <option v-for="b in boitier_forme" :key="b.boitierFormeID" :value="b.nom" @click="updatePrice">{{
+                            b.nom
+                        }}</option>
+                    </select>
+                </div>
 
-            <div class="crea_montre__form--input">
-                <label for="pierre">Pierre Préciseuse</label>
-                <select class="crea_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre">
-                    <option v-for="p in pierre" :key="p.pierreID" :value="p.nom" @click="updatePrice">{{ p.nom }}</option>
-                </select>
-            </div>
+                <div class="m-creation-form">
+                    <label for="bracelet_texture">Texture du bracelet: </label>
+                    <select class="m-creation-form-select" name="bracelet_texture" id="bracelet_texture"
+                        v-model="montre.bracelet_texture">
+                        <option v-for="b in bracelet_texture" :key="b.braceletTextureID" :value="b.nom"
+                            @click="updatePrice">{{
+                                b.nom }}</option>
+                    </select>
+                </div>
 
-            <div class="crea_montre__form--input">
-                <label for="main_color">Couleur</label>
-                <input type="color" name="main_color" id="main_color" v-model="montre.main_color">
-            </div>
+                <div class="m-creation-form">
+                    <label for="pierre">Pierre Préciseuse: </label>
+                    <select class="m-creation-form-select" name="pierre" id="pierre" v-model="montre.pierre">
+                        <option v-for="p in pierre" :key="p.pierreID" :value="p.nom" @click="updatePrice">{{ p.nom }}
+                        </option>
+                    </select>
+                </div>
 
-            <input class="crea_montre__form--bouton" type="submit" value="Enregistrer cette Montre"/>
+                <div class="m-creation-form">
+                    <label for="main_color">Couleur: </label>
+                    <input type="color" class="color" name="main_color" id="main_color" v-model="montre.main_color">
+                </div>
 
-        </form>
-    {{ message }}
-  </div>
+                <input class="form-button" type="submit" value="Enregistrer cette Montre" />
+
+            </form>
+        </div>
+        {{ message }}
+    </div>
 </template>
 
-<style lang="scss" scoped>
 
-.canvas{
-    width: 600px;
+
+<style lang="scss">
+.o-creation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .canvas {
+        width: rem(1000);
+    }
+
+    font-family: $font-poppins;
+    color: $white;
+    padding: rem(40) rem(80);
+
+    h2 {
+        font-size: 3vw;
+    }
+
+    &-content {
+        margin: rem(50) rem(0);
+        display: flex;
+
+        gap: rem(300);
+
+        &-rendu {
+
+            &__infos {
+                display: flex;
+                flex-direction: column;
+                gap: rem(10);
+                white-space: nowrap;
+            }
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: rem(10);
+            .m-creation-form {
+                input {
+                    padding: rem(6) rem(5);
+                    background: $white;
+                }
+                &-select {
+                    background: $white;
+                    padding: rem(6) rem(5);
+                }
+                .color{
+                    padding: 0;
+                }
+            }
+            .form-button{
+                display: inline-block;
+                font-family: $font-poppins;
+                text-transform: uppercase;
+                background: transparent;
+                color: $white;
+                padding: rem(12) rem(30);
+                border: 1px solid $white;
+                transition: all .4s;
+                cursor: pointer;
+                font-weight: 200;
+            }
+            .form-button:hover {
+            background:$white;
+            border: 1px solid $white;
+            color: $black;
+        }
+    }
 }
-
+}
 </style>
 
 <script setup>
@@ -127,19 +183,19 @@ const montre = ref({})
 
 const getMontre = async () => {
     montre.value = {
-        nom : "",
-        createur : user.value.pseudo,
-        boitier_texture : boitier_texture.value[0].nom,
-        boitier_texture_prix  : boitier_texture.value[0].prix,
-        boitier_forme : boitier_forme.value[0].nom,
-        boitier_forme_prix : boitier_forme.value[0].prix,
-        bracelet_texture : bracelet_texture.value[0].nom,
-        bracelet_texture_prix : bracelet_texture.value[0].prix,
-        pierre_nom : pierre.value[0].nom,
-        pierre_couleur : pierre.value[0].couleur,
-        pierre_prix : pierre.value[0].prix,
-        main_color : "#999999",
-        prix_montre : boitier_texture.value[0].prix + boitier_forme.value[0].prix + bracelet_texture.value[0].prix + pierre.value[0].prix,
+        nom: "",
+        createur: user.value.pseudo,
+        boitier_texture: boitier_texture.value[0].nom,
+        boitier_texture_prix: boitier_texture.value[0].prix,
+        boitier_forme: boitier_forme.value[0].nom,
+        boitier_forme_prix: boitier_forme.value[0].prix,
+        bracelet_texture: bracelet_texture.value[0].nom,
+        bracelet_texture_prix: bracelet_texture.value[0].prix,
+        pierre_nom: pierre.value[0].nom,
+        pierre_couleur: pierre.value[0].couleur,
+        pierre_prix: pierre.value[0].prix,
+        main_color: "#999999",
+        prix_montre: boitier_texture.value[0].prix + boitier_forme.value[0].prix + bracelet_texture.value[0].prix + pierre.value[0].prix,
     }
     console.log(user.value.pseudo)
     console.log(user.value)
@@ -173,14 +229,14 @@ const getUser = async () => {
 
 // modification des prix en fonction des noms de chaque élément
 const updatePrice = async () => {
-    const BoitierTextureSelect = boitier_texture.value.find(bot => bot.nom === montre.value.boitier_texture )
-    const BoitierFormeSelect = boitier_forme.value.find(bot => bot.nom === montre.value.boitier_forme )
-    const BraceletTextureSelect = bracelet_texture.value.find(brt => brt.nom === montre.value.bracelet_texture )
+    const BoitierTextureSelect = boitier_texture.value.find(bot => bot.nom === montre.value.boitier_texture)
+    const BoitierFormeSelect = boitier_forme.value.find(bot => bot.nom === montre.value.boitier_forme)
+    const BraceletTextureSelect = bracelet_texture.value.find(brt => brt.nom === montre.value.bracelet_texture)
     const PierreSelect = pierre.value.find(p => p.couleur === montre.value.pierre_couleur)
 
     montre.value.boitier_texture_prix = BoitierTextureSelect.prix
     montre.value.boitier_forme_prix = BoitierFormeSelect.prix
-    montre.value.bracelet_texture_prix = BraceletTextureSelect.prix 
+    montre.value.bracelet_texture_prix = BraceletTextureSelect.prix
     montre.value.pierre_prix = PierreSelect.prix
 
     montre.value.prix_montre = BoitierTextureSelect.prix + BoitierFormeSelect.prix + BraceletTextureSelect.prix + PierreSelect.prix
@@ -208,11 +264,11 @@ onMounted(async () => {
 })
 
 definePageMeta({
-  middleware: [
-    function (to, from) {
-    },
-    'auth',
-  ],
+    middleware: [
+        function (to, from) {
+        },
+        'auth',
+    ],
 });
 
 </script>

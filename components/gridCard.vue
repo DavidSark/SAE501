@@ -11,7 +11,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap:rem(50)
+    gap:rem(50);
+    max-width: 1200px
 }
 </style>
   

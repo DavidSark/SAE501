@@ -54,7 +54,6 @@
         display: flex;
         flex-direction: column;
         font-family: $font-poppins;
-      
         font-size: 3vw;
         color: $white;
 

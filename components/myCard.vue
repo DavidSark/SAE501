@@ -1,6 +1,6 @@
 <template>
     <div class="o-card">
-        <threejs class="three" v-bind="valeur" />
+        <!-- <threejs class="three" v-bind="valeur" /> -->
 
         <div class="o-card-content">
             <p class="a-card-name">{{ valeur.nom }}</p>
