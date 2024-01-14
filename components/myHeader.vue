@@ -31,10 +31,10 @@ const isLoggedCart = computed(() =>{
             </div>
             <div class="a-container-txt">
                 <nuxt-link to="/montre">
-                    <div>products</div>
+                    <div>produits</div>
                 </nuxt-link>
                 <nuxt-link to="/montre/creation" v-if="store.token != null">
-                    <div>customize</div>
+                    <div>custimiser</div>
                 </nuxt-link>
             
             </div>
@@ -42,7 +42,7 @@ const isLoggedCart = computed(() =>{
         <div class="m-container__right">
             
             <div class="a-log" v-if="store.token != null">
-                <myButton lien="/profile">Profile</myButton>
+                <myButton lien="/profile">Profil</myButton>
             </div>
 
             <div class="a-cart" v-if="store.token != null">

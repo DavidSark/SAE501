@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <gridCard :valeurMontres="listeMontre"/>
+        <gridCard class="o-container-montre-center" :valeurMontres="listeMontre"/>
 
         <div class="pagination">
             <myButton color="white" @click="lessMontre()" v-if="montreMin">Moins de Montres</myButton>
@@ -50,6 +50,9 @@
     height: 100vh;
     padding: rem(100) rem(80);
     text-transform: uppercase;
+    &-center{
+        margin: 0 auto;
+    }
     .m-container-montre-text {
         display: flex;
         flex-direction: column;
