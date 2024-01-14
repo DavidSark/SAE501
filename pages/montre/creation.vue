@@ -84,7 +84,7 @@
 
             <div class="crea_montre__form--input">
                 <label for="pierre">Pierre Préciseuse</label>
-                <select class="crea_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre_couleur">
+                <select class="crea_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre">
                     <option v-for="p in pierre" :key="p.pierreID" :value="p.nom" @click="updatePrice">{{ p.nom }}</option>
                 </select>
             </div>

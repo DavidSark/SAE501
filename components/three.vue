@@ -21,7 +21,7 @@ const props = defineProps({
     boitier_texture : String,
     boitier_forme : String,
     bracelet_texture : String,
-    pierre_couleur : String,
+    pierre : String,
     main_color : String,
 })
 
@@ -129,14 +129,14 @@ function onLoaded(collada) {
     iPierre = objects.getObjectByName("pierre");
     
     iPierre.material = new THREE.MeshBasicMaterial({
-        color: proprietes.pierre_couleur.value,
+        color: proprietes.pierre.value,
     });
     
     //changement de couleur des pierres
-    if (proprietes.pierre_couleur.value == "Rubis"){
+    if (proprietes.pierre.value == "Rubis"){
     iPierre.material.color.set("#FF0000");
     iPierre.material.transparent = false;
-    }else if(proprietes.pierre_couleur.value == "Diamant"){
+    }else if(proprietes.pierre.value == "Diamant"){
         iPierre.material.color.set("#0000FF");
         iPierre.material.transparent = false;
     }else{
