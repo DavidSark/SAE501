@@ -4,6 +4,10 @@
   <div>
     <h1>Création d'une Montre</h1>
 
+    <div class="canvas">
+                <three v-bind="montre"/>
+            </div>
+
         <!-- <ul>
             <li v-for="(m, key) in montre" :key="key">{{ key }} : {{ m }} <br/><br/> </li>
         </ul> -->
@@ -80,7 +84,7 @@
 
             <div class="crea_montre__form--input">
                 <label for="pierre">Pierre Préciseuse</label>
-                <select class="crea_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre">
+                <select class="crea_montre__form--select" name="pierre" id="pierre" v-model="montre.pierre_couleur">
                     <option v-for="p in pierre" :key="p.pierreID" :value="p.nom" @click="updatePrice">{{ p.nom }}</option>
                 </select>
             </div>
@@ -97,7 +101,13 @@
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.canvas{
+    width: 600px;
+}
+
+</style>
 
 <script setup>
 import { client } from '@/utils/axios.js'
