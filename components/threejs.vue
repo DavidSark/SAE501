@@ -34,11 +34,11 @@ let clock = new THREE.Clock();
 let aiguilleHeures,
     aiguilleMinutes,
     aiguilleSecondes,
-    boitierForme,
-    iPierre,
-    iBracelet,
-    iFermoir,
-    iBouton;
+    forme,
+    pierre,
+    bracelet,
+    fermoir,
+    bouton;
   
 const initScene = () => {
     scene = new THREE.Scene();
@@ -105,58 +105,58 @@ function onLoaded(collada) {
     });
   
     if (proprietes.boitier_forme.value == "boitier_rond"){
-        boitierForme = objects.getObjectByName("boitier_rond");
+        forme = objects.getObjectByName("boitier_rond");
     } else if (proprietes.boitier_forme.value == "boitier_carre"){
-        boitierForme= objects.getObjectByName("boitier_carre");
+        forme= objects.getObjectByName("boitier_carre");
     }
     
     const textureLoaderBoitier = new TextureLoader();
     const textureBoitier = textureLoaderBoitier.load(`/images/background_${proprietes.boitier_texture.value}.png`);
     
-    boitierForme.material[0] = new THREE.MeshBasicMaterial({
+    forme.material[0] = new THREE.MeshBasicMaterial({
         color: proprietes.main_color.value,
     });
 
-    boitierForme.material[1] = new THREE.MeshBasicMaterial({
+    forme.material[1] = new THREE.MeshBasicMaterial({
         map: textureBoitier,
     });
   
-    iBouton = objects.getObjectByName("bouton");
-    iBouton.material = new THREE.MeshBasicMaterial({
+    bouton = objects.getObjectByName("bouton");
+    bouton.material = new THREE.MeshBasicMaterial({
         color: "#000",
     });
   
-    iPierre = objects.getObjectByName("pierre");
+    pierre = objects.getObjectByName("pierre");
     
-    iPierre.material = new THREE.MeshBasicMaterial({
+    pierre.material = new THREE.MeshBasicMaterial({
         color: proprietes.pierre.value,
     });
     
     //changement de couleur des pierres
     if (proprietes.pierre.value == "Rubis"){
-    iPierre.material.color.set("#FF0000");
-    iPierre.material.transparent = false;
+    pierre.material.color.set("#FF0000");
+    pierre.material.transparent = false;
     }else if(proprietes.pierre.value == "Diamant"){
-        iPierre.material.color.set("#0000FF");
-        iPierre.material.transparent = false;
+        pierre.material.color.set("#0000FF");
+        pierre.material.transparent = false;
     }else{
-        iPierre.material.color.set("#00FF00");
-        iPierre.material.transparent = false;
+        pierre.material.color.set("#00FF00");
+        pierre.material.transparent = false;
     }
  
   
-    let iPierre2 = iPierre.clone();
-    iPierre2.position.y -= 38;
+    let pierre2 = pierre.clone();
+    pierre2.position.y -= 38;
   
 
   
-    iBracelet = objects.getObjectByName("bracelet");
+    bracelet = objects.getObjectByName("bracelet");
     const textureLoader = new TextureLoader();
     const texture = textureLoader.load(`/images/texture-${proprietes.bracelet_texture.value}.jpg`);
-    iBracelet.material = new THREE.MeshBasicMaterial({ map: texture });
+    bracelet.material = new THREE.MeshBasicMaterial({ map: texture });
   
-    iFermoir = objects.getObjectByName("fermoir");
-    iFermoir.material = new THREE.MeshBasicMaterial({
+    fermoir = objects.getObjectByName("fermoir");
+    fermoir.material = new THREE.MeshBasicMaterial({
         color: proprietes.main_color.value,
     });
   
@@ -164,12 +164,12 @@ function onLoaded(collada) {
         aiguilleHeures,
         aiguilleMinutes,
         aiguilleSecondes,
-        boitierForme,
-        iBouton,
-        iPierre,
-        iPierre2,
-        iBracelet,
-        iFermoir
+        forme,
+        bouton,
+        pierre,
+        pierre2,
+        bracelet,
+        fermoir
     );
   
     controls.target.set(0, 0, 0);

@@ -5,7 +5,7 @@
     <h1>Création d'une Montre</h1>
 
     <div class="canvas">
-                <three v-bind="montre"/>
+                <threejs v-bind="montre"/>
             </div>
 
         <!-- <ul>
