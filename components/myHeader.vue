@@ -9,7 +9,7 @@ const isLoggedIn = computed(() => {
 
 const isLoggedCart = computed(() =>{
     if(store.token == null){
-        route.push('/register')
+        route.push('/')
     }else{
         route.push('/profile')
     }

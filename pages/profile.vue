@@ -40,7 +40,7 @@
         <hr />
 
         <p>{{ logoutMessage }}</p>
-        <myButton @click="logout">Déconnexion</myButton>
+        <myButton color="white" class="o-profile-logout" @click="logout">Déconnexion</myButton>
     </main>
 </template>
 
@@ -56,7 +56,9 @@
     &-center {
         margin: 0 auto rem(60) auto;
     }
-
+    &-logout{
+       padding: rem(40) rem(0) ;
+    }
     h2 {
         margin-top: rem(20);
         font-size: 3vw;
