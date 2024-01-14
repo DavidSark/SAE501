@@ -27,29 +27,16 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div>
-    <Header></Header>
+  <div class="o-indexContainer">
 
 
-    
-    <!-- Appel des données dans le html pour tester-->
-    <br>
-    pierres:
-    <br>
-    <ul>
-      <li v-for="item in apiData" :key="item.id">
-        {{ item.nom }}
-        {{ item.prix }}€
-      </li>
-    </ul>
-    <br>
-    Montres :
-    <ul>
-      <li v-for="item in apiData2" :key="item.id">
-       <pre>{{ item }}</pre>
-      </li>
-    </ul>
-     <!-- Fin de l'appel des données dans le html pour tester-->
+    <section class="m-sectionLeft">
+      
+    </section>
+
+    <section class="m-sectionRight">
+
+    </section>
 
 
 
@@ -57,4 +44,20 @@ onBeforeMount(async () => {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+.o-indexContainer{
+  display: flex;
+  height: 100vh;
+  .m-sectionLeft{
+    background: $black;
+    width: 50%;
+  }
+  .m-sectionRight{
+    background: $white;
+    width: 50%;
+  }
+  
+}
+
+</style>

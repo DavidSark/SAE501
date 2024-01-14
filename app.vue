@@ -1,6 +1,8 @@
 <template>
   <div>
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 
@@ -9,6 +11,7 @@
 
 body{
   background: rgb(156, 156, 156);
+  
 }
 </style>
 
