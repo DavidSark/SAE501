@@ -6,9 +6,9 @@ export const client = axios.create({
 
 const API_URL = 'http://localhost:3001'; 
 
-export const registerUser = async (name, password) => {
+export const registerUser = async (pseudo, mdp) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, { name, password });
+    const response = await axios.post(`${API_URL}/register`, { pseudo, mdp });
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la création de l’utilisateur:', error);
